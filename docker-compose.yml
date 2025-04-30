@@ -1,0 +1,15 @@
+services:
+  annonariapp:
+    container_name: annonariapp
+    image: annonariapp:1.0.0
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    ports:
+      - "4000:4000"
+    restart: always
+    volumes:
+      - ./backend:/app 
+    env_file:
+      - ./backend/.env 
+    command: python run.py 
