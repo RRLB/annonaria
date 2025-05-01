@@ -1,0 +1,94 @@
+/* src/assets/css/CampaignCard.css */
+
+.card {
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    margin-bottom: 20px; /* Optional: Add spacing between cards */
+  }
+  
+  .card-body {
+    padding: 15px;
+  }
+  
+  .card-title {
+    font-size: 1.25rem;
+    font-weight: bold;
+  }
+  
+  .card-text {
+    margin-bottom: 10px;
+  }
+  
+  .card-text-scroll {
+    /* fixe line height to create even cars */
+    max-height: 6em; 
+    line-height: 1.5em;
+    height: 72px;
+    overflow-y: hidden;
+    margin-bottom: 10px;
+  }
+
+  /* Show scrollbar on hover */
+  .card-text-scroll:hover {
+    overflow-y: scroll;
+  }
+
+  .card .badge {
+    font-size: 0.875rem;
+    font-weight:300
+  }
+
+  /* active */
+  .badge-active {
+    background-color: var(--accent-color-active);
+  }
+  
+  /* inactive */
+  .badge-inactive {
+    background-color: var(--accent-color-inactive);
+  }
+  
+  .card .btn {
+    font-size: 0.875rem;
+    margin-top: 10px;
+  }
+
+  /* Consistent button sizing */
+  .card .btn-sm {
+    min-width: 85px; /* Force same width */
+    text-align: center;
+  }
+
+  /* edit */
+  .card .btn-primary {
+    background-color: var(--accent-color-edit);
+    border-color: var(--accent-color-edit);
+  }
+  
+  .card .btn-primary:hover {
+    background-color: var(--hover-color-edit);
+    border-color: var(--hover-color-edit);
+  }
+  /* delete */
+  .card .btn-danger {
+    background-color: var(--accent-color-delete);
+    border-color: var(--accent-color-delete);
+  }
+  
+  .card .btn-danger:hover {
+    background-color: var(--hover-color-delete);
+    border-color: var(--hover-color-delete);
+  }
+  /* toggle */
+  .card .btn-secondary {
+    background-color: var(--accent-color-toggle);
+    border-color: var(--accent-color-toggle);
+  }
+  
+  .card .btn-secondary:hover {
+    background-color: var(--hover-color-toggle);
+    border-color: var(--hover-color-toggle);
+  }
+  
+  
+  
