@@ -12,11 +12,11 @@ from flask_jwt_extended import jwt_required
 
 campaigns_bp = Blueprint('campaigns', __name__)
 
-#GET ALL - users can see multi campaigns
+#GET ALL - users can create campaigns
 @campaigns_bp.route('/campaigns', methods=['GET'])
 @jwt_required()
 @swag_from({
-    'security': [{'BearerAuth': []}],
+     'security': [{'BearerAuth': []}],
     'responses': {
         200: {
             'description': 'List of all campaigns',
@@ -249,7 +249,7 @@ def delete_campaign(id):
     db.session.commit()
     return jsonify({'message': 'Campaign deleted'})
 
-#PATCH update - only admins can update and delete
+#PATCH update - users can create campaigns
 @campaigns_bp.route('/campaigns/<int:id>/toggle', methods=['PATCH'])
 @swag_from({
     'parameters': [

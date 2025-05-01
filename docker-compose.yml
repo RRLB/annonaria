@@ -13,3 +13,13 @@ services:
     env_file:
       - ./backend/.env 
     command: python run.py 
+  frontend:
+    container_name: annonaria-frontend
+    image: annonaria-frontend:1.0.0
+    build:
+      context: ./frontend/annonaria-frontend
+      dockerfile: Dockerfile
+    ports:
+      - "5173:5173"
+    depends_on:
+      - annonariapp
