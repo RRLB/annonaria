@@ -11,10 +11,10 @@ class CampaignSchema(Schema):
     id = fields.Int(dump_only=True) # Read-only for responses
     name = fields.Str(required=True, validate=lambda x: len(x) <= 100)
     description = fields.Str(allow_none=True)
-    start_date = fields.Date(required=True)
-    end_date = fields.Date(required=True)
+    start_date = fields.Date(required=True, format='%Y-%m-%d')
+    end_date = fields.Date(required=True, format='%Y-%m-%d')
     budget = fields.Float(required=True)
-    is_active = fields.Boolean(default=True)
+    is_active = fields.Boolean(dump_default=True)
 
     # data validation // basic checks for end date and budget
     @validates('end_date')
@@ -26,7 +26,7 @@ class CampaignSchema(Schema):
         if 'start_date' in self.context:
             start_date = self.context['start_date']
             logger.debug(f"Comparing end_date {value} with start_date {start_date}")
-            if value < start_date:
+            if value <= start_date:
                 logger.error(f"End date {value} is before start_date {start_date}")
                 raise ValidationError('End date must be after start date.')
         else:

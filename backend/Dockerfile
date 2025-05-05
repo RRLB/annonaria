@@ -9,6 +9,8 @@ COPY . .
 # Expose the port the app runs on
 EXPOSE 4000
 # Set environment variables
-ENV FLASK_APP=run.py
+#ENV FLASK_APP=run.py
 # Command to run the application
-CMD ["flask", "run", "--host=0.0.0.0", "--port=4000"]
+#CMD ["flask", "run", "--host=0.0.0.0", "--port=4000"]
+ENV PYTHONPATH=/app
+CMD ["python", "run.py"]

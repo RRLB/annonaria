@@ -15,3 +15,10 @@ A fullstack Ad Tech application to manage advertising campaigns, built with Flas
    ```bash
    git clone https://github.com/RRLB/annonaria.git
    cd annonaria
+   <!-- NPM INSTALL -->
+
+## TEST USER
+- user1
+- 
+
+## Launch DOCKER

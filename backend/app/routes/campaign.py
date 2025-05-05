@@ -1,6 +1,6 @@
 from flask import Blueprint, request, jsonify
 from app.models.campaign import CampaignModel
-from app.schemas.campaign import campaign_schema, multi_campaigns_schema
+from app.schemas.campaign import CampaignSchema, campaign_schema, multi_campaigns_schema
 # from app.database import get_db_session
 from app import db
 from sqlalchemy.exc import IntegrityError
@@ -40,7 +40,7 @@ campaigns_bp = Blueprint('campaigns', __name__)
 })
 def get_multi_campaigns():
     campaigns = CampaignModel.query.all()
-    return multi_campaigns_schema.dump(campaigns), 200
+    return jsonify(multi_campaigns_schema.dump(campaigns)), 200
 
 #POST create campaigne - users can create campaigns
 @campaigns_bp.route('/campaigns', methods=['POST'])
@@ -98,7 +98,6 @@ def create_campaign():
     
     try:
         # Validate and deserialize input
-        # Set start_date in schema context
         schema = campaign_schema
         if 'start_date' in data:
             schema.context['start_date'] = schema.fields['start_date'].deserialize(data['start_date'])
@@ -150,7 +149,7 @@ def get_campaign(id):
     campaign = db.session.query(CampaignModel).get(id)
     if not campaign:
         return jsonify({'error': 'Campaign not found'}), 404
-    return jsonify(campaign_schema.dump(campaign))
+    return jsonify(campaign_schema.dump(campaign)), 200
 
 #PUT update - users can create campaigns
 @campaigns_bp.route('/campaigns/<int:id>', methods=['PUT'])
@@ -198,11 +197,9 @@ def update_campaign(id):
     campaign = db.session.query(CampaignModel).get(id)
     if not campaign:
         return jsonify({'error': 'Campaign not found'}), 404
-    
     data = request.get_json()
     try:
         # Validate and deserialize input
-        # Set start_date in schema context
         schema = campaign_schema
         if 'start_date' in data:
             schema.context['start_date'] = schema.fields['start_date'].deserialize(data['start_date'])
@@ -210,7 +207,7 @@ def update_campaign(id):
         for key, value in campaign_data.items():
             setattr(campaign, key, value)
         db.session.commit()
-        return jsonify(campaign_schema.dump(campaign))
+        return jsonify(campaign_schema.dump(campaign)), 200
     except ValidationError as err:
         return jsonify({'errors': err.messages}), 400
     except IntegrityError:
@@ -244,10 +241,9 @@ def delete_campaign(id):
     campaign = db.session.query(CampaignModel).get(id)
     if not campaign:
         return jsonify({'error': 'Campaign not found'}), 404
-    
     db.session.delete(campaign)
     db.session.commit()
-    return jsonify({'message': 'Campaign deleted'})
+    return jsonify({'message': 'Campaign deleted'}), 200
 
 #PATCH update - users can create campaigns
 @campaigns_bp.route('/campaigns/<int:id>/toggle', methods=['PATCH'])
@@ -284,7 +280,4 @@ def toggle_campaign(id):
     
     campaign.is_active = not campaign.is_active
     db.session.commit()
-    return jsonify(campaign_schema.dump(campaign))
-
-# Error Handling: Returns appropriate HTTP status codes (e.g., 404 for not found, 400 for validation errors).
-# Modularity: Blueprint (campaigns_bp) keeps routes organized and reusable.
+    return jsonify(campaign_schema.dump(campaign)), 200
