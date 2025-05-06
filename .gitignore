@@ -1,3 +1,10 @@
 *node_modules
 __pycache__/
 *.pyc
+
+backend/campaigns.db
+backend/__pycache__/
+backend/tests/__pycache__/
+frontend/annonaria-frontend/node_modules/
+frontend/annonaria-frontend/dist/
+.env

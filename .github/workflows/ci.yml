@@ -1,0 +1,46 @@
+name: CI
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  backend:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.13'
+      - name: Install dependencies
+        run: |
+          cd backend
+          pytest tests/
+      - name: Build backend Docker image
+        run: |
+          cd backend
+          docker build -t annonariapp:1.0.0 .
+  
+  frontend:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+      - name: Install dependencies
+        run: |
+          cd frontend/annonaria-frontend
+          npm install
+      - name: Run Vitest
+        run: |
+          cd frontend/annonaria-frontend
+          npm run test
+      - name: Build frontend Docker image
+        run: |
+          cd frontend
+          docker build -t annonaria-frontend:1.0.0 .
