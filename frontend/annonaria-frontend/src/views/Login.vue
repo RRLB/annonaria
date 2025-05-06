@@ -44,7 +44,11 @@ export default {
 
                 this.$router.push('/');
             } catch (err) {
-                this.error = 'Invalid credentials';
+                if (err.response && err.response.status === 401) {
+                    this.error = 'Invalid credentials';
+                } else {
+                    this.error = 'An error occurred. Please try again later.';
+                }
             }
         }
     }

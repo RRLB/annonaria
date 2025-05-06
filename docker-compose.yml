@@ -13,7 +13,7 @@ services:
     env_file:
       - ./backend/.env 
     command: python run.py 
-  frontend:
+  annonaria-frontend:
     container_name: annonaria-frontend
     image: annonaria-frontend:1.0.0
     build:
