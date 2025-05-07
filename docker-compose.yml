@@ -1,3 +1,7 @@
+# docker-compose.yml
+# Configuration file for Docker Compose to define and run the Annonaria application's services.
+# This file orchestrates the backend (Flask) and frontend (Vue.js) services, specifying their build, networking, and runtime settings.
+
 services:
   annonariapp:
     container_name: annonariapp

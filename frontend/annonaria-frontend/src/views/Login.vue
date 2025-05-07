@@ -1,3 +1,7 @@
+<!-- Provides a user login form for the Annonaria frontend. -->
+<!-- Sends credentials to the backend API, stores the access token on success, -->
+<!-- handles login errors, and redirects to the home page upon successful authentication. -->
+
 <template>
     <div class="row justify-content-center">
         <div class="col-md-6">

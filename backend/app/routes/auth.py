@@ -1,3 +1,8 @@
+# routes/auth.py
+# Blueprint for authentication-related API endpoints in the Annonaria backend.
+# Provides endpoints for user registration, login, and retrieving all users,
+# using JWT for authentication and Marshmallow for user data serialization.
+
 from flask import Blueprint, request, jsonify
 from app import db
 from app.models.users import User
@@ -6,6 +11,7 @@ from flasgger import swag_from
 from app.schemas.users import users_schema
 from flask_jwt_extended import get_jwt_identity, jwt_required
 
+# Define the auth blueprint for modular routing
 auth_bp = Blueprint('auth', __name__)
 
 @auth_bp.route('/register', methods=['POST'])
@@ -30,6 +36,15 @@ auth_bp = Blueprint('auth', __name__)
     }
 })
 def register():
+    """Register a new user and return a JWT access token.
+    
+    Expects a JSON payload with username and password. Creates a new user with
+    a hashed password and returns a JWT token for authentication.
+    
+    Returns:
+        JSON response with the access token and HTTP status 201, or an error
+        with status 400 if the username already exists.
+    """
     data = request.get_json()
     if User.query.filter_by(username=data['username']).first():
         return jsonify({'message': 'Username already exists'}), 400
@@ -73,6 +88,15 @@ def register():
     }
 })
 def login():
+    """Authenticate a user and return a JWT access token.
+    
+    Expects a JSON payload with username and password. Verifies credentials
+    and returns a JWT token if valid.
+    
+    Returns:
+        JSON response with the access token and HTTP status 200, or an error
+        with status 401 if credentials are invalid.
+    """
     data = request.get_json()
     user = User.query.filter_by(username=data['username']).first()
     if user and user.check_password(data['password']):
@@ -98,15 +122,20 @@ def login():
                 }
             }
         },
-        403: {
-            'description': 'Forbidden – admin access required'
-        },
         401: {
             'description': 'Missing or invalid JWT token'
         }
     }
 })
 def get_all_users():
+    """Retrieve a list of all users.
+    
+    Requires JWT authentication.
+    
+    Returns:
+        JSON response with a list of users and HTTP status 200, or an error
+        with status 403 if access is forbidden.
+    """
     user_id = get_jwt_identity()
     user = User.query.get(user_id)
     if not user :

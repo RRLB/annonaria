@@ -1,8 +1,13 @@
-# SQLAlchemy module
+# models/campaign.py
+# Defines the CampaignModel for the Annonaria backend using SQLAlchemy.
+# This module specifies the schema for the 'campaigns' database table and provides
+# a method to serialize campaign data for API responses.
+
 from app import db
 from datetime import date
 
 class CampaignModel(db.Model):
+    """SQLAlchemy model representing a campaign in the Annonaria application."""
     __tablename__ = 'campaigns'
 
     id = db.Column(db.Integer, primary_key=True)
@@ -15,6 +20,13 @@ class CampaignModel(db.Model):
 
     # to dictionary
     def to_dict(self):
+        """
+        Serialize the campaign instance to a dictionary for API responses.
+        
+        Returns:
+            dict: A dictionary containing the campaign's attributes with dates
+                  formatted as ISO strings (e.g., '2023-10-01').
+        """
         return {
             'id': self.id,
             'name': self.name,
@@ -24,6 +36,5 @@ class CampaignModel(db.Model):
             'budget': self.budget,
             'is_active': self.is_active
         }
-    
-# Method: to_dict() simplifies serialization for API responses.
+
 

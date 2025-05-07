@@ -1,3 +1,7 @@
+# run.py
+# Entry point for the Annonaria backend Flask application.
+# This script initializes the Flask app and starts the development server.
+
 from app import create_app
 
 app = create_app()

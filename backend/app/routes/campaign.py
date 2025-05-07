@@ -1,3 +1,8 @@
+# routes/campaign.py
+# Blueprint for campaign-related API endpoints in the Annonaria backend.
+# Provides CRUD operations for campaigns and a toggle endpoint, with JWT authentication
+# and Marshmallow schema validation for input/output serialization.
+
 from flask import Blueprint, request, jsonify
 from app.models.campaign import CampaignModel
 from app.schemas.campaign import CampaignSchema, campaign_schema, multi_campaigns_schema
@@ -9,7 +14,7 @@ from marshmallow.exceptions import ValidationError
 from flasgger import swag_from
 from flask_jwt_extended import jwt_required
 
-
+# Define the campaigns blueprint for modular routing
 campaigns_bp = Blueprint('campaigns', __name__)
 
 #GET ALL - users can create campaigns
@@ -39,6 +44,13 @@ campaigns_bp = Blueprint('campaigns', __name__)
     }
 })
 def get_multi_campaigns():
+    """Retrieve a list of all campaigns.
+    
+    Requires JWT authentication. Returns serialized campaign data.
+    
+    Returns:
+        JSON response with a list of campaigns and HTTP status 200.
+    """
     campaigns = CampaignModel.query.all()
     return jsonify(multi_campaigns_schema.dump(campaigns)), 200
 
@@ -94,6 +106,15 @@ def get_multi_campaigns():
     }
 })
 def create_campaign():
+    """Create a new campaign.
+    
+    Requires JWT authentication. Validates input using CampaignSchema and stores
+    the campaign in the database.
+    
+    Returns:
+        JSON response with the created campaign and HTTP status 201, or an error
+        with status 400 if validation or database constraints fail.
+    """
     data = request.get_json()
     
     try:
@@ -146,6 +167,17 @@ def create_campaign():
     }
 })
 def get_campaign(id):
+    """Retrieve a single campaign by ID.
+    
+    No authentication required. Returns the serialized campaign data.
+    
+    Args:
+        id (int): The ID of the campaign to retrieve.
+    
+    Returns:
+        JSON response with the campaign and HTTP status 200, or an error with
+        status 404 if the campaign is not found.
+    """
     campaign = db.session.query(CampaignModel).get(id)
     if not campaign:
         return jsonify({'error': 'Campaign not found'}), 404
@@ -194,6 +226,18 @@ def get_campaign(id):
     }
 })
 def update_campaign(id):
+    """Update an existing campaign by ID.
+    
+    Requires JWT authentication. Validates input using CampaignSchema and updates
+    the campaign in the database.
+    
+    Args:
+        id (int): The ID of the campaign to update.
+    
+    Returns:
+        JSON response with the updated campaign and HTTP status 200, or an error
+        with status 404 (not found) or 400 (validation/database error).
+    """
     campaign = db.session.query(CampaignModel).get(id)
     if not campaign:
         return jsonify({'error': 'Campaign not found'}), 404
@@ -238,6 +282,17 @@ def update_campaign(id):
     }
 })
 def delete_campaign(id):
+    """Delete a campaign by ID.
+    
+    Requires JWT authentication.
+    
+    Args:
+        id (int): The ID of the campaign to delete.
+    
+    Returns:
+        JSON response with a success message and HTTP status 200, or an error
+        with status 404 if the campaign is not found.
+    """
     campaign = db.session.query(CampaignModel).get(id)
     if not campaign:
         return jsonify({'error': 'Campaign not found'}), 404
@@ -274,6 +329,18 @@ def delete_campaign(id):
     }
 })
 def toggle_campaign(id):
+    """Toggle the active status of a campaign by ID.
+    
+    No authentication required. Switches the campaign's is_active field between
+    True and False.
+    
+    Args:
+        id (int): The ID of the campaign to toggle.
+    
+    Returns:
+        JSON response with the updated campaign and HTTP status 200, or an error
+        with status 404 if the campaign is not found.
+    """
     campaign = db.session.query(CampaignModel).get(id)
     if not campaign:
         return jsonify({'error': 'Campaign not found'}), 404

@@ -1,3 +1,7 @@
+<!-- Displays the list of campaigns on the homepage of the Annonaria frontend. -->
+<!-- Fetches campaigns from the backend API and shows them in responsive card components. -->
+<!-- Allows users to edit, delete, and toggle campaigns via buttons on each card. -->
+
 <template>
   <div>
     <h1>Campaigns</h1>
@@ -32,6 +36,7 @@ export default {
     };
   },
   async created() {
+    // Fetch all campaigns on component creation
     try {
       const response = await axios.get('http://localhost:4000/api/v1/campaigns', {
         headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
@@ -42,9 +47,11 @@ export default {
     }
   },
   methods: {
+    // Navigate to the campaign editing page
     editCampaign(id) {
       this.$router.push(`/edit/${id}`);
     },
+     // Delete a campaign after confirmation and remove it from the local state
     async deleteCampaign(id) {
       if (confirm('Are you sure you want to delete this campaign?')) {
         try {
@@ -57,6 +64,7 @@ export default {
         }
       }
     },
+    // Toggle the active state of a campaign (e.g., activate/deactivate)
     async toggleCampaign(id) {
       try {
         await axios.patch(`http://localhost:4000/api/v1/campaigns/${id}/toggle`, null, {
@@ -73,7 +81,6 @@ export default {
 </script>
 
 <style scoped>
-/* You can customize the card and layout here */
 .row {
   margin-top: 20px;
 }

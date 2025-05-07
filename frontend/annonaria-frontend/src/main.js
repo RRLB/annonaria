@@ -1,3 +1,7 @@
+// Entry point for the Annonaria frontend Vue.js application.
+// Initializes the Vue app, sets up Pinia for state management, integrates Vue Router,
+// and applies Bootstrap and custom CSS for styling.
+
 import './assets/styles.css';
 import { createApp } from 'vue';
 import App from './App.vue';

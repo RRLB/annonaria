@@ -1,5 +1,8 @@
-import { fileURLToPath, URL } from 'node:url'
+// Configuration file for Vite, the build tool for the Annonaria frontend.
+// Defines plugins, path aliases, and server settings for the Vue.js application,
+// optimized for development and Dockerized deployment.
 
+import { fileURLToPath, URL } from 'node:url'
 import { defineConfig } from 'vite'
 import vue from '@vitejs/plugin-vue'
 
